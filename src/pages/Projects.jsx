@@ -23,7 +23,8 @@ const Projects = () => {
         "/images/project1.png/1768584764993.jpg",
         "/images/project1.png/1768584765049.jpg"
       ],
-      githubLink: "https://github.com/Anwar-skali/app-job-tracker"
+      githubLink: "https://github.com/Anwar-skali/app-job-tracker",
+      isMobile: true
     },
     {
       title: "Gestion d'Entreprise (ERP)",
@@ -130,16 +131,29 @@ const Projects = () => {
                 </button>
 
                 {/* Left side: Images gallery */}
-                <div className="w-full md:w-1/2 bg-slate-50 dark:bg-slate-950 flex-shrink-0 border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-800">
-                  <div className="flex md:grid md:grid-cols-1 overflow-x-auto md:overflow-y-auto h-64 md:h-[70vh] custom-scrollbar gap-4 p-4 md:p-8 pt-14 md:pt-16 snap-x snap-mandatory">
+                <div className={clsx(
+                  "bg-slate-50 dark:bg-slate-950 flex-shrink-0 border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-800",
+                  selectedProject.isMobile ? "w-full md:w-[45%]" : "w-full md:w-3/5"
+                )}>
+                  <div className={clsx(
+                    "flex custom-scrollbar gap-8 p-8 md:p-12 pt-20 md:pt-24 snap-x snap-mandatory overflow-x-auto",
+                    selectedProject.isMobile ? "md:h-[75vh] items-center" : "md:flex-col h-72 md:h-[75vh]"
+                  )}>
                     {selectedProject.gallery?.map((img, i) => (
                       <motion.div
                         key={i}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="min-w-[80vw] md:min-w-0 snap-center rounded-2xl overflow-hidden shadow-lg border-2 border-white dark:border-slate-800 flex-shrink-0 aspect-video md:aspect-auto"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className={clsx(
+                          "snap-center rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white dark:border-slate-800 flex-shrink-0 bg-slate-100 dark:bg-slate-900",
+                          selectedProject.isMobile ? "h-[55vh] md:h-[60vh] aspect-[9/19] mx-auto" : "w-full aspect-video"
+                        )}
                       >
-                        <img src={img} alt={selectedProject.title} className="w-full h-full object-cover" />
+                        <img
+                          src={img}
+                          alt={selectedProject.title}
+                          className="w-full h-full object-contain"
+                        />
                       </motion.div>
                     ))}
                   </div>

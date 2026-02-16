@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import { Github, ExternalLink } from 'lucide-react';
+import { clsx } from 'clsx';
 
-const ProjectCard = ({ title, description, technologies, githubLink, demoLink, imgSrc, gifSrc, onClick }) => {
+const ProjectCard = ({ title, description, technologies, githubLink, demoLink, imgSrc, gifSrc, onClick, isMobile }) => {
   return (
     <motion.div
       whileHover={{ y: -10 }}
@@ -10,11 +11,17 @@ const ProjectCard = ({ title, description, technologies, githubLink, demoLink, i
     >
       {/* Image or GIF */}
       {(imgSrc || gifSrc) && (
-        <div className="relative w-full h-56 bg-slate-100 dark:bg-slate-800 overflow-hidden">
+        <div className={clsx(
+          "relative w-full overflow-hidden bg-slate-100 dark:bg-slate-800",
+          isMobile ? "h-80" : "h-60"
+        )}>
           <img
             src={gifSrc || imgSrc}
             alt={title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className={clsx(
+              "w-full h-full object-cover transition-transform duration-500 group-hover:scale-110",
+              isMobile ? "object-top" : "object-center"
+            )}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
             <div className="flex gap-3">
