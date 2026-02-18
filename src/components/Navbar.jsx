@@ -93,6 +93,8 @@ const Navbar = () => {
     setLogoClickCount(newCount);
 
     const messages = [
+      'NE PAS TOUCHER... 🤫',
+      'STOP IT!',
       'MY NAME IS ANWAR',
       '22 YO',
       'WHAT YOU WAITING',
@@ -174,8 +176,10 @@ const Navbar = () => {
               transition={{ type: "spring", stiffness: 600, damping: 15 }}
               className="flex items-center gap-4 group cursor-pointer relative z-50 origin-left"
             >
-              <div className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-slate-100 dark:border-slate-800 group-hover:border-blue-500 transition-all duration-500 shadow-md group-hover:shadow-blue-500/20">
-                <img src="/images/profile.png" alt="Logo" className="w-full h-full object-cover" />
+              <div className="relative">
+                <div className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-slate-100 dark:border-slate-800 group-hover:border-blue-500 transition-all duration-500 shadow-md group-hover:shadow-blue-500/20">
+                  <img src="/images/profile.png" alt="Logo" className="w-full h-full object-cover" />
+                </div>
               </div>
 
               <div className="flex flex-col text-left">

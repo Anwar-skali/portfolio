@@ -72,6 +72,15 @@ const Home = () => {
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </a>
                 <a
+                  href="https://www.linkedin.com/in/anwar-skali-1a2b3c/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-blue-700 transition-all duration-300 flex items-center gap-3 shadow-lg hover:shadow-2xl hover:-translate-y-1"
+                >
+                  <Linkedin className="w-5 h-5" />
+                  {t('common.linkedin')}
+                </a>
+                <a
                   href="/CV_Anwar_Skali.pdf"
                   download
                   className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white px-8 py-4 rounded-2xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-300 flex items-center gap-3 shadow-sm hover:shadow-xl hover:-translate-y-1"

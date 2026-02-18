@@ -11,27 +11,58 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState(null); // 'success' | 'error'
 
-  const sendEmail = (e) => {
+  const sendEmail = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setStatus(null);
 
-    emailjs.sendForm(
-      import.meta.env.VITE_EMAILJS_SERVICE_ID,
-      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-      formRef.current,
-      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-    )
-      .then((result) => {
-        setStatus('success');
-        formRef.current.reset();
-      }, (error) => {
-        console.error(error.text);
-        setStatus('error');
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
+    const formData = new FormData(formRef.current);
+    const templateParams = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      title: formData.get('title'),
+      message: formData.get('message'),
+    };
+
+    try {
+      const promises = [];
+
+      // 1. Send email to Admin (Primary)
+      promises.push(
+        emailjs.send(
+          import.meta.env.VITE_EMAILJS_SERVICE_ID,
+          import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+          templateParams,
+          import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        )
+      );
+
+      // 2. Send auto-reply to Visitor ONLY if a valid ID is provided
+      const visitorTemplateId = import.meta.env.VITE_EMAILJS_VISITOR_TEMPLATE_ID;
+      if (visitorTemplateId && visitorTemplateId !== 'TON_TEMPLATE_ID_ICI') {
+        promises.push(
+          emailjs.send(
+            import.meta.env.VITE_EMAILJS_SERVICE_ID,
+            visitorTemplateId,
+            templateParams,
+            import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+          )
+        );
+      } else {
+        console.warn('EmailJS: Visitor template ID not configured. Skipping auto-reply.');
+      }
+
+      // Wait for all active promises to complete
+      await Promise.all(promises);
+
+      setStatus('success');
+      formRef.current.reset();
+    } catch (error) {
+      console.error('EmailJS Error:', error);
+      setStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -130,7 +161,7 @@ const Contact = () => {
                         <label className="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">{t('contact.emailLabel')}</label>
                         <input
                           required
-                          name="from_email"
+                          name="email"
                           type="email"
                           className="w-full px-6 py-4 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none font-medium dark:text-white"
                           placeholder={t('contact.placeholderEmail')}
